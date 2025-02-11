@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            plugins: [require("daisyui")],
+            daisyui: {
+                themes: ["light"],
+            },
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .quiz-container {
+                gap: 12px;
+                width: 768px;
+            }
+        }
+    </style>
+</head>
+<body class="container mx-auto max-w-3xl p-4">
+    <h1 class="text-4xl font-bold text-center mb-8 no-print">Multiplication Quiz</h1>
+    <div class="flex flex-col items-center mb-8">
+        <div class="form-control w-full max-w-xs no-print">
+            <label class="label">
+                <span class="label-text">Select the maximum number:</span>
+            </label>
+            <select class="select select-bordered w-full" id="maxNumber" onchange="renderQuiz()">
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+
+        <div class="grid grid-cols-5 gap-4 p-4 quiz-container" id="quiz"></div>
+    </div>
+    <script>
+        function generateQuestion(max) {
+            const num1 = Math.floor(Math.random() * max) + 1;
+            const num2 = Math.floor(Math.random() * max) + 1;
+            return `
+                <div class="card bg-base-100">
+                    <div class="card-body p-4 min-h-[166px] flex flex-col items-end justify-center">
+                        <div class="text-3xl font-mono tabular-nums text-right" style="width: 4ch">${num1}</div>
+                        <div class="text-3xl font-mono tabular-nums text-right" style="width: 4ch">× ${num2}</div>
+                        <div class="w-24 border-t-2 border-base-content mt-1"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuiz() {
+            const quizContainer = document.getElementById("quiz");
+            while (quizContainer.firstChild) {
+                quizContainer.removeChild(quizContainer.firstChild);
+            }
+            
+            let maxNumber = parseInt(document.getElementById('maxNumber').value, 10);
+
+            for (let i = 0; i < 5; i++) {
+                let rowHTML = '';
+                for (let j = 0; j < 5; j++) {
+                    rowHTML += generateQuestion(maxNumber);
+                }
+                quizContainer.insertAdjacentHTML('beforeend', `<div class="contents">${rowHTML}</div>`);
+            }
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
